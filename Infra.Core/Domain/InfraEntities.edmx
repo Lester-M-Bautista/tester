@@ -1,0 +1,809 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="IdentityServerModel.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="APPLICATIONS">
+          <Key>
+            <PropertyRef Name="APPLICATIONID" />
+          </Key>
+          <Property Name="APPLICATIONID" Type="guid raw" Nullable="false" />
+          <Property Name="APPLICATIONNAME" Type="nvarchar2" MaxLength="256" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="nvarchar2" MaxLength="256" />
+          <Property Name="ISDELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="APPLICAITONSECRET" Type="guid raw" Nullable="false" />
+          <Property Name="REDIRECTURL" Type="nvarchar2" MaxLength="256" />
+          <Property Name="REFRESHLIFETIME" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="ISNATIVE" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="ALLOWEDORIGIN" Type="nvarchar2" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LOGS">
+          <Key>
+            <PropertyRef Name="LOGID" />
+          </Key>
+          <Property Name="LOGID" Type="guid raw" Nullable="false" />
+          <Property Name="CATEGORY" Type="nvarchar2" MaxLength="250" Nullable="false" />
+          <Property Name="APPLICATIONNAME" Type="nvarchar2" MaxLength="250" Nullable="false" />
+          <Property Name="APPLICATIONVERSION" Type="nvarchar2" MaxLength="250" Nullable="false" />
+          <Property Name="COMPUTERNAME" Type="nvarchar2" MaxLength="250" Nullable="false" />
+          <Property Name="ACTOR" Type="nvarchar2" MaxLength="250" Nullable="false" />
+          <Property Name="ACTION" Type="nvarchar2" MaxLength="250" Nullable="false" />
+          <Property Name="MESSAGE" Type="nvarchar2" MaxLength="2000" Nullable="false" />
+          <Property Name="TRACE" Type="nvarchar2" MaxLength="2000" Nullable="false" />
+          <Property Name="TIMESTAMP" Type="timestamp" Precision="6" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PERMISSIONS">
+          <Key>
+            <PropertyRef Name="PERMISSIONID" />
+          </Key>
+          <Property Name="APPLICATIONID" Type="guid raw" Nullable="false" />
+          <Property Name="PERMISSIONID" Type="guid raw" Nullable="false" />
+          <Property Name="PERMISSIONNAME" Type="nvarchar2" MaxLength="256" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="nvarchar2" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="PERMISSIONSOFROLE">
+          <Key>
+            <PropertyRef Name="ROLEPERMISSIONID" />
+          </Key>
+          <Property Name="ROLEPERMISSIONID" Type="guid raw" Nullable="false" />
+          <Property Name="ROLEID" Type="guid raw" Nullable="false" />
+          <Property Name="PERMISSIONID" Type="guid raw" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REFRESHTOKEN">
+          <Key>
+            <PropertyRef Name="TOKENID" />
+          </Key>
+          <Property Name="TOKENID" Type="guid raw" Nullable="false" />
+          <Property Name="APPLICATIONID" Type="guid raw" Nullable="false" />
+          <Property Name="SUBJECT" Type="nvarchar2" MaxLength="50" Nullable="false" />
+          <Property Name="UTCCREATED" Type="date" Nullable="false" />
+          <Property Name="UTCEXPIRY" Type="date" Nullable="false" />
+          <Property Name="TICKET" Type="clob" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ROLES">
+          <Key>
+            <PropertyRef Name="ROLEID" />
+          </Key>
+          <Property Name="APPLICATIONID" Type="guid raw" Nullable="false" />
+          <Property Name="ROLEID" Type="guid raw" Nullable="false" />
+          <Property Name="ROLENAME" Type="nvarchar2" MaxLength="256" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="nvarchar2" MaxLength="256" />
+          <Property Name="ISDELETED" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USERCLAIM">
+          <Key>
+            <PropertyRef Name="CLAIMID" />
+          </Key>
+          <Property Name="CLAIMID" Type="guid raw" Nullable="false" />
+          <Property Name="USERACCOUNTID" Type="guid raw" Nullable="false" />
+          <Property Name="TYPE" Type="nvarchar2" MaxLength="50" Nullable="false" />
+          <Property Name="VALUE" Type="nvarchar2" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USERLOGIN">
+          <Key>
+            <PropertyRef Name="LOGINID" />
+          </Key>
+          <Property Name="LOGINID" Type="guid raw" Nullable="false" />
+          <Property Name="USERACCOUNTID" Type="guid raw" Nullable="false" />
+          <Property Name="PROVIDERNAME" Type="nvarchar2" MaxLength="20" Nullable="false" />
+          <Property Name="PROVIDERKEY" Type="nvarchar2" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USERPROFILE">
+          <Key>
+            <PropertyRef Name="USERACCOUNTID" />
+          </Key>
+          <Property Name="USERACCOUNTID" Type="guid raw" Nullable="false" />
+          <Property Name="BIRTHDATE" Type="date" />
+          <Property Name="GENDER" Type="nvarchar2" MaxLength="10" />
+          <Property Name="PROFILEPICTURE" Type="blob" />
+        </EntityType>
+        <EntityType Name="USERS">
+          <Key>
+            <PropertyRef Name="USERID" />
+          </Key>
+          <Property Name="USERID" Type="guid raw" Nullable="false" />
+          <Property Name="USERNAME" Type="nvarchar2" MaxLength="256" Nullable="false" />
+          <Property Name="USERFULLNAME" Type="nvarchar2" MaxLength="256" />
+          <Property Name="USEREMAIL" Type="varchar2" MaxLength="256" Nullable="false" />
+          <Property Name="PASSWORD" Type="nvarchar2" MaxLength="128" Nullable="false" />
+          <Property Name="PASSWORDFAILCOUNT" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="PASSWORDFORMAT" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="PASSWORDSALT" Type="nvarchar2" MaxLength="128" />
+          <Property Name="ISAPPROVED" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="ISLOCKEDOUT" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="ISDELETED" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATECREATED" Type="date" Nullable="false" />
+          <Property Name="DATECHANGEPASS" Type="date" />
+          <Property Name="DATELASTACTIVITY" Type="date" />
+          <Property Name="DATELASTLOGIN" Type="date" />
+          <Property Name="DATELASTLOCKOUT" Type="date" />
+          <Property Name="DEPARTMENT" Type="guid raw" Nullable="false" />
+          <Property Name="DATEACCESSEXPIRY" Type="date" />
+        </EntityType>
+        <EntityType Name="USERSINROLE">
+          <Key>
+            <PropertyRef Name="USERINROLEID" />
+          </Key>
+          <Property Name="USERINROLEID" Type="guid raw" Nullable="false" />
+          <Property Name="USERID" Type="guid raw" Nullable="false" />
+          <Property Name="ROLEID" Type="guid raw" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_PERMITAPPID">
+          <End Role="APPLICATIONS" Type="Self.APPLICATIONS" Multiplicity="1" />
+          <End Role="PERMISSIONS" Type="Self.PERMISSIONS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APPLICATIONS">
+              <PropertyRef Name="APPLICATIONID" />
+            </Principal>
+            <Dependent Role="PERMISSIONS">
+              <PropertyRef Name="APPLICATIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_POF_PERMITID">
+          <End Role="PERMISSIONS" Type="Self.PERMISSIONS" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PERMISSIONSOFROLE" Type="Self.PERMISSIONSOFROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERMISSIONS">
+              <PropertyRef Name="PERMISSIONID" />
+            </Principal>
+            <Dependent Role="PERMISSIONSOFROLE">
+              <PropertyRef Name="PERMISSIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_POF_ROLEID">
+          <End Role="ROLES" Type="Self.ROLES" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PERMISSIONSOFROLE" Type="Self.PERMISSIONSOFROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLES">
+              <PropertyRef Name="ROLEID" />
+            </Principal>
+            <Dependent Role="PERMISSIONSOFROLE">
+              <PropertyRef Name="ROLEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ROLESAPPID">
+          <End Role="APPLICATIONS" Type="Self.APPLICATIONS" Multiplicity="1" />
+          <End Role="ROLES" Type="Self.ROLES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APPLICATIONS">
+              <PropertyRef Name="APPLICATIONID" />
+            </Principal>
+            <Dependent Role="ROLES">
+              <PropertyRef Name="APPLICATIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UIR_ROLEID">
+          <End Role="ROLES" Type="Self.ROLES" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="USERSINROLE" Type="Self.USERSINROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLES">
+              <PropertyRef Name="ROLEID" />
+            </Principal>
+            <Dependent Role="USERSINROLE">
+              <PropertyRef Name="ROLEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UIR_USERID">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="USERSINROLE" Type="Self.USERSINROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USERSINROLE">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REFRESHTOKEN_FK1">
+          <End Role="APPLICATIONS" Type="Self.APPLICATIONS" Multiplicity="1" />
+          <End Role="REFRESHTOKEN" Type="Self.REFRESHTOKEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APPLICATIONS">
+              <PropertyRef Name="APPLICATIONID" />
+            </Principal>
+            <Dependent Role="REFRESHTOKEN">
+              <PropertyRef Name="APPLICATIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="USERCLAIM_FK1">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
+          <End Role="USERCLAIM" Type="Self.USERCLAIM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USERCLAIM">
+              <PropertyRef Name="USERACCOUNTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="USERLOGIN_FK1">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
+          <End Role="USERLOGIN" Type="Self.USERLOGIN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USERLOGIN">
+              <PropertyRef Name="USERACCOUNTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="USERPROFILE_FK1">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
+          <End Role="USERPROFILE" Type="Self.USERPROFILE" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USERPROFILE">
+              <PropertyRef Name="USERACCOUNTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IdentityServerModelStoreContainer">
+          <EntitySet Name="APPLICATIONS" EntityType="Self.APPLICATIONS" Schema="MCG-SECURITY" store:Type="Tables" />
+          <EntitySet Name="LOGS" EntityType="Self.LOGS" Schema="MCG-SECURITY" store:Type="Tables" />
+          <EntitySet Name="PERMISSIONS" EntityType="Self.PERMISSIONS" Schema="MCG-SECURITY" store:Type="Tables" />
+          <EntitySet Name="PERMISSIONSOFROLE" EntityType="Self.PERMISSIONSOFROLE" Schema="MCG-SECURITY" store:Type="Tables" />
+          <EntitySet Name="REFRESHTOKEN" EntityType="Self.REFRESHTOKEN" Schema="MCG-SECURITY" store:Type="Tables" />
+          <EntitySet Name="ROLES" EntityType="Self.ROLES" Schema="MCG-SECURITY" store:Type="Tables" />
+          <EntitySet Name="USERCLAIM" EntityType="Self.USERCLAIM" Schema="MCG-SECURITY" store:Type="Tables" />
+          <EntitySet Name="USERLOGIN" EntityType="Self.USERLOGIN" Schema="MCG-SECURITY" store:Type="Tables" />
+          <EntitySet Name="USERPROFILE" EntityType="Self.USERPROFILE" Schema="MCG-SECURITY" store:Type="Tables" />
+          <EntitySet Name="USERS" EntityType="Self.USERS" Schema="MCG-SECURITY" store:Type="Tables" />
+          <EntitySet Name="USERSINROLE" EntityType="Self.USERSINROLE" Schema="MCG-SECURITY" store:Type="Tables" />
+          <AssociationSet Name="FK_PERMITAPPID" Association="Self.FK_PERMITAPPID">
+            <End Role="APPLICATIONS" EntitySet="APPLICATIONS" />
+            <End Role="PERMISSIONS" EntitySet="PERMISSIONS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_POF_PERMITID" Association="Self.FK_POF_PERMITID">
+            <End Role="PERMISSIONS" EntitySet="PERMISSIONS" />
+            <End Role="PERMISSIONSOFROLE" EntitySet="PERMISSIONSOFROLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_POF_ROLEID" Association="Self.FK_POF_ROLEID">
+            <End Role="ROLES" EntitySet="ROLES" />
+            <End Role="PERMISSIONSOFROLE" EntitySet="PERMISSIONSOFROLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ROLESAPPID" Association="Self.FK_ROLESAPPID">
+            <End Role="APPLICATIONS" EntitySet="APPLICATIONS" />
+            <End Role="ROLES" EntitySet="ROLES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UIR_ROLEID" Association="Self.FK_UIR_ROLEID">
+            <End Role="ROLES" EntitySet="ROLES" />
+            <End Role="USERSINROLE" EntitySet="USERSINROLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UIR_USERID" Association="Self.FK_UIR_USERID">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="USERSINROLE" EntitySet="USERSINROLE" />
+          </AssociationSet>
+          <AssociationSet Name="REFRESHTOKEN_FK1" Association="Self.REFRESHTOKEN_FK1">
+            <End Role="APPLICATIONS" EntitySet="APPLICATIONS" />
+            <End Role="REFRESHTOKEN" EntitySet="REFRESHTOKEN" />
+          </AssociationSet>
+          <AssociationSet Name="USERCLAIM_FK1" Association="Self.USERCLAIM_FK1">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="USERCLAIM" EntitySet="USERCLAIM" />
+          </AssociationSet>
+          <AssociationSet Name="USERLOGIN_FK1" Association="Self.USERLOGIN_FK1">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="USERLOGIN" EntitySet="USERLOGIN" />
+          </AssociationSet>
+          <AssociationSet Name="USERPROFILE_FK1" Association="Self.USERPROFILE_FK1">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="USERPROFILE" EntitySet="USERPROFILE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IdentityServerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="APPLICATIONS">
+          <Key>
+            <PropertyRef Name="APPLICATIONID" />
+          </Key>
+          <Property Name="APPLICATIONID" Type="Guid" Nullable="false" />
+          <Property Name="APPLICATIONNAME" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ISDELETED" Type="Boolean" Nullable="false" />
+          <Property Name="APPLICAITONSECRET" Type="Guid" Nullable="false" />
+          <Property Name="REDIRECTURL" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="REFRESHLIFETIME" Type="Int32" Nullable="false" />
+          <Property Name="ISNATIVE" Type="Boolean" Nullable="false" />
+          <Property Name="ALLOWEDORIGIN" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PERMISSIONS" Relationship="Self.FK_PERMITAPPID" FromRole="APPLICATIONS" ToRole="PERMISSIONS" />
+          <NavigationProperty Name="ROLES" Relationship="Self.FK_ROLESAPPID" FromRole="APPLICATIONS" ToRole="ROLES" />
+          <NavigationProperty Name="REFRESHTOKEN" Relationship="Self.REFRESHTOKEN_FK1" FromRole="APPLICATIONS" ToRole="REFRESHTOKEN" />
+        </EntityType>
+        <EntityType Name="PERMISSIONS">
+          <Key>
+            <PropertyRef Name="PERMISSIONID" />
+          </Key>
+          <Property Name="APPLICATIONID" Type="Guid" Nullable="false" />
+          <Property Name="PERMISSIONID" Type="Guid" Nullable="false" />
+          <Property Name="PERMISSIONNAME" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="APPLICATIONS" Relationship="Self.FK_PERMITAPPID" FromRole="PERMISSIONS" ToRole="APPLICATIONS" />
+          <NavigationProperty Name="PERMISSIONSOFROLE" Relationship="Self.FK_POF_PERMITID" FromRole="PERMISSIONS" ToRole="PERMISSIONSOFROLE" />
+        </EntityType>
+        <EntityType Name="PERMISSIONSOFROLE">
+          <Key>
+            <PropertyRef Name="ROLEPERMISSIONID" />
+          </Key>
+          <Property Name="ROLEPERMISSIONID" Type="Guid" Nullable="false" />
+          <Property Name="ROLEID" Type="Guid" Nullable="false" />
+          <Property Name="PERMISSIONID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="PERMISSIONS" Relationship="Self.FK_POF_PERMITID" FromRole="PERMISSIONSOFROLE" ToRole="PERMISSIONS" />
+          <NavigationProperty Name="ROLES" Relationship="Self.FK_POF_ROLEID" FromRole="PERMISSIONSOFROLE" ToRole="ROLES" />
+        </EntityType>
+        <EntityType Name="REFRESHTOKEN">
+          <Key>
+            <PropertyRef Name="TOKENID" />
+          </Key>
+          <Property Name="TOKENID" Type="Guid" Nullable="false" />
+          <Property Name="APPLICATIONID" Type="Guid" Nullable="false" />
+          <Property Name="SUBJECT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UTCCREATED" Type="DateTime" Nullable="false" />
+          <Property Name="UTCEXPIRY" Type="DateTime" Nullable="false" />
+          <Property Name="TICKET" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="APPLICATIONS" Relationship="Self.REFRESHTOKEN_FK1" FromRole="REFRESHTOKEN" ToRole="APPLICATIONS" />
+        </EntityType>
+        <EntityType Name="ROLES">
+          <Key>
+            <PropertyRef Name="ROLEID" />
+          </Key>
+          <Property Name="APPLICATIONID" Type="Guid" Nullable="false" />
+          <Property Name="ROLEID" Type="Guid" Nullable="false" />
+          <Property Name="ROLENAME" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ISDELETED" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="APPLICATIONS" Relationship="Self.FK_ROLESAPPID" FromRole="ROLES" ToRole="APPLICATIONS" />
+          <NavigationProperty Name="PERMISSIONSOFROLE" Relationship="Self.FK_POF_ROLEID" FromRole="ROLES" ToRole="PERMISSIONSOFROLE" />
+          <NavigationProperty Name="USERSINROLE" Relationship="Self.FK_UIR_ROLEID" FromRole="ROLES" ToRole="USERSINROLE" />
+        </EntityType>
+        <EntityType Name="USERCLAIM">
+          <Key>
+            <PropertyRef Name="CLAIMID" />
+          </Key>
+          <Property Name="CLAIMID" Type="Guid" Nullable="false" />
+          <Property Name="USERACCOUNTID" Type="Guid" Nullable="false" />
+          <Property Name="TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VALUE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="USERS" Relationship="Self.USERCLAIM_FK1" FromRole="USERCLAIM" ToRole="USERS" />
+        </EntityType>
+        <EntityType Name="USERLOGIN">
+          <Key>
+            <PropertyRef Name="LOGINID" />
+          </Key>
+          <Property Name="LOGINID" Type="Guid" Nullable="false" />
+          <Property Name="USERACCOUNTID" Type="Guid" Nullable="false" />
+          <Property Name="PROVIDERNAME" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PROVIDERKEY" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="USERS" Relationship="Self.USERLOGIN_FK1" FromRole="USERLOGIN" ToRole="USERS" />
+        </EntityType>
+        <EntityType Name="USERPROFILE">
+          <Key>
+            <PropertyRef Name="USERACCOUNTID" />
+          </Key>
+          <Property Name="USERACCOUNTID" Type="Guid" Nullable="false" />
+          <Property Name="BIRTHDATE" Type="DateTime" />
+          <Property Name="GENDER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PROFILEPICTURE" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="USERS" Relationship="Self.USERPROFILE_FK1" FromRole="USERPROFILE" ToRole="USERS" />
+        </EntityType>
+        <EntityType Name="USERS">
+          <Key>
+            <PropertyRef Name="USERID" />
+          </Key>
+          <Property Name="USERID" Type="Guid" Nullable="false" />
+          <Property Name="USERNAME" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="USERFULLNAME" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="USEREMAIL" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PASSWORD" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PASSWORDFAILCOUNT" Type="Int32" Nullable="false" />
+          <Property Name="PASSWORDFORMAT" Type="Int32" Nullable="false" />
+          <Property Name="PASSWORDSALT" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ISAPPROVED" Type="Boolean" Nullable="false" />
+          <Property Name="ISLOCKEDOUT" Type="Boolean" Nullable="false" />
+          <Property Name="ISDELETED" Type="Boolean" Nullable="false" />
+          <Property Name="DATECREATED" Type="DateTime" Nullable="false" />
+          <Property Name="DATECHANGEPASS" Type="DateTime" />
+          <Property Name="DATELASTACTIVITY" Type="DateTime" />
+          <Property Name="DATELASTLOGIN" Type="DateTime" />
+          <Property Name="DATELASTLOCKOUT" Type="DateTime" />
+          <Property Name="DEPARTMENT" Type="Guid" Nullable="false" />
+          <Property Name="DATEACCESSEXPIRY" Type="DateTime" />
+          <NavigationProperty Name="USERCLAIM" Relationship="Self.USERCLAIM_FK1" FromRole="USERS" ToRole="USERCLAIM" />
+          <NavigationProperty Name="USERLOGIN" Relationship="Self.USERLOGIN_FK1" FromRole="USERS" ToRole="USERLOGIN" />
+          <NavigationProperty Name="USERPROFILE" Relationship="Self.USERPROFILE_FK1" FromRole="USERS" ToRole="USERPROFILE" />
+          <NavigationProperty Name="USERSINROLE" Relationship="Self.FK_UIR_USERID" FromRole="USERS" ToRole="USERSINROLE" />
+        </EntityType>
+        <EntityType Name="USERSINROLE">
+          <Key>
+            <PropertyRef Name="USERINROLEID" />
+          </Key>
+          <Property Name="USERINROLEID" Type="Guid" Nullable="false" />
+          <Property Name="USERID" Type="Guid" Nullable="false" />
+          <Property Name="ROLEID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ROLES" Relationship="Self.FK_UIR_ROLEID" FromRole="USERSINROLE" ToRole="ROLES" />
+          <NavigationProperty Name="USERS" Relationship="Self.FK_UIR_USERID" FromRole="USERSINROLE" ToRole="USERS" />
+        </EntityType>
+        <Association Name="FK_PERMITAPPID">
+          <End Role="APPLICATIONS" Type="Self.APPLICATIONS" Multiplicity="1" />
+          <End Role="PERMISSIONS" Type="Self.PERMISSIONS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APPLICATIONS">
+              <PropertyRef Name="APPLICATIONID" />
+            </Principal>
+            <Dependent Role="PERMISSIONS">
+              <PropertyRef Name="APPLICATIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ROLESAPPID">
+          <End Role="APPLICATIONS" Type="Self.APPLICATIONS" Multiplicity="1" />
+          <End Role="ROLES" Type="Self.ROLES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APPLICATIONS">
+              <PropertyRef Name="APPLICATIONID" />
+            </Principal>
+            <Dependent Role="ROLES">
+              <PropertyRef Name="APPLICATIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REFRESHTOKEN_FK1">
+          <End Role="APPLICATIONS" Type="Self.APPLICATIONS" Multiplicity="1" />
+          <End Role="REFRESHTOKEN" Type="Self.REFRESHTOKEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APPLICATIONS">
+              <PropertyRef Name="APPLICATIONID" />
+            </Principal>
+            <Dependent Role="REFRESHTOKEN">
+              <PropertyRef Name="APPLICATIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_POF_PERMITID">
+          <End Role="PERMISSIONS" Type="Self.PERMISSIONS" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PERMISSIONSOFROLE" Type="Self.PERMISSIONSOFROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERMISSIONS">
+              <PropertyRef Name="PERMISSIONID" />
+            </Principal>
+            <Dependent Role="PERMISSIONSOFROLE">
+              <PropertyRef Name="PERMISSIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_POF_ROLEID">
+          <End Role="ROLES" Type="Self.ROLES" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PERMISSIONSOFROLE" Type="Self.PERMISSIONSOFROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLES">
+              <PropertyRef Name="ROLEID" />
+            </Principal>
+            <Dependent Role="PERMISSIONSOFROLE">
+              <PropertyRef Name="ROLEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UIR_ROLEID">
+          <End Role="ROLES" Type="Self.ROLES" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="USERSINROLE" Type="Self.USERSINROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLES">
+              <PropertyRef Name="ROLEID" />
+            </Principal>
+            <Dependent Role="USERSINROLE">
+              <PropertyRef Name="ROLEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="USERCLAIM_FK1">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
+          <End Role="USERCLAIM" Type="Self.USERCLAIM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USERCLAIM">
+              <PropertyRef Name="USERACCOUNTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="USERLOGIN_FK1">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
+          <End Role="USERLOGIN" Type="Self.USERLOGIN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USERLOGIN">
+              <PropertyRef Name="USERACCOUNTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="USERPROFILE_FK1">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
+          <End Role="USERPROFILE" Type="Self.USERPROFILE" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USERPROFILE">
+              <PropertyRef Name="USERACCOUNTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UIR_USERID">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="USERSINROLE" Type="Self.USERSINROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="USERSINROLE">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InfraEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="APPLICATIONS" EntityType="Self.APPLICATIONS" />
+          <EntitySet Name="PERMISSIONS" EntityType="Self.PERMISSIONS" />
+          <EntitySet Name="PERMISSIONSOFROLE" EntityType="Self.PERMISSIONSOFROLE" />
+          <EntitySet Name="REFRESHTOKEN" EntityType="Self.REFRESHTOKEN" />
+          <EntitySet Name="ROLES" EntityType="Self.ROLES" />
+          <EntitySet Name="USERCLAIM" EntityType="Self.USERCLAIM" />
+          <EntitySet Name="USERLOGIN" EntityType="Self.USERLOGIN" />
+          <EntitySet Name="USERPROFILE" EntityType="Self.USERPROFILE" />
+          <EntitySet Name="USERS" EntityType="Self.USERS" />
+          <EntitySet Name="USERSINROLE" EntityType="Self.USERSINROLE" />
+          <AssociationSet Name="FK_PERMITAPPID" Association="Self.FK_PERMITAPPID">
+            <End Role="APPLICATIONS" EntitySet="APPLICATIONS" />
+            <End Role="PERMISSIONS" EntitySet="PERMISSIONS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ROLESAPPID" Association="Self.FK_ROLESAPPID">
+            <End Role="APPLICATIONS" EntitySet="APPLICATIONS" />
+            <End Role="ROLES" EntitySet="ROLES" />
+          </AssociationSet>
+          <AssociationSet Name="REFRESHTOKEN_FK1" Association="Self.REFRESHTOKEN_FK1">
+            <End Role="APPLICATIONS" EntitySet="APPLICATIONS" />
+            <End Role="REFRESHTOKEN" EntitySet="REFRESHTOKEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_POF_PERMITID" Association="Self.FK_POF_PERMITID">
+            <End Role="PERMISSIONS" EntitySet="PERMISSIONS" />
+            <End Role="PERMISSIONSOFROLE" EntitySet="PERMISSIONSOFROLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_POF_ROLEID" Association="Self.FK_POF_ROLEID">
+            <End Role="ROLES" EntitySet="ROLES" />
+            <End Role="PERMISSIONSOFROLE" EntitySet="PERMISSIONSOFROLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UIR_ROLEID" Association="Self.FK_UIR_ROLEID">
+            <End Role="ROLES" EntitySet="ROLES" />
+            <End Role="USERSINROLE" EntitySet="USERSINROLE" />
+          </AssociationSet>
+          <AssociationSet Name="USERCLAIM_FK1" Association="Self.USERCLAIM_FK1">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="USERCLAIM" EntitySet="USERCLAIM" />
+          </AssociationSet>
+          <AssociationSet Name="USERLOGIN_FK1" Association="Self.USERLOGIN_FK1">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="USERLOGIN" EntitySet="USERLOGIN" />
+          </AssociationSet>
+          <AssociationSet Name="USERPROFILE_FK1" Association="Self.USERPROFILE_FK1">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="USERPROFILE" EntitySet="USERPROFILE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UIR_USERID" Association="Self.FK_UIR_USERID">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="USERSINROLE" EntitySet="USERSINROLE" />
+          </AssociationSet>
+          <EntitySet Name="LOGS" EntityType="IdentityServerModel.LOGS" />
+        </EntityContainer>
+        <EntityType Name="LOGS">
+          <Key>
+            <PropertyRef Name="LOGID" />
+          </Key>
+          <Property Name="LOGID" Type="Guid" Nullable="false" />
+          <Property Name="CATEGORY" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="APPLICATIONNAME" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="APPLICATIONVERSION" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="COMPUTERNAME" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ACTOR" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ACTION" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MESSAGE" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="TRACE" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="TIMESTAMP" Type="DateTime" Nullable="false" Precision="6" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IdentityServerModelStoreContainer" CdmEntityContainer="InfraEntities">
+          <EntitySetMapping Name="APPLICATIONS">
+            <EntityTypeMapping TypeName="IdentityServerModel.APPLICATIONS">
+              <MappingFragment StoreEntitySet="APPLICATIONS">
+                <ScalarProperty Name="APPLICATIONID" ColumnName="APPLICATIONID" />
+                <ScalarProperty Name="APPLICATIONNAME" ColumnName="APPLICATIONNAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="ISDELETED" ColumnName="ISDELETED" />
+                <ScalarProperty Name="APPLICAITONSECRET" ColumnName="APPLICAITONSECRET" />
+                <ScalarProperty Name="REDIRECTURL" ColumnName="REDIRECTURL" />
+                <ScalarProperty Name="REFRESHLIFETIME" ColumnName="REFRESHLIFETIME" />
+                <ScalarProperty Name="ISNATIVE" ColumnName="ISNATIVE" />
+                <ScalarProperty Name="ALLOWEDORIGIN" ColumnName="ALLOWEDORIGIN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERMISSIONS">
+            <EntityTypeMapping TypeName="IdentityServerModel.PERMISSIONS">
+              <MappingFragment StoreEntitySet="PERMISSIONS">
+                <ScalarProperty Name="APPLICATIONID" ColumnName="APPLICATIONID" />
+                <ScalarProperty Name="PERMISSIONID" ColumnName="PERMISSIONID" />
+                <ScalarProperty Name="PERMISSIONNAME" ColumnName="PERMISSIONNAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERMISSIONSOFROLE">
+            <EntityTypeMapping TypeName="IdentityServerModel.PERMISSIONSOFROLE">
+              <MappingFragment StoreEntitySet="PERMISSIONSOFROLE">
+                <ScalarProperty Name="ROLEPERMISSIONID" ColumnName="ROLEPERMISSIONID" />
+                <ScalarProperty Name="ROLEID" ColumnName="ROLEID" />
+                <ScalarProperty Name="PERMISSIONID" ColumnName="PERMISSIONID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REFRESHTOKEN">
+            <EntityTypeMapping TypeName="IdentityServerModel.REFRESHTOKEN">
+              <MappingFragment StoreEntitySet="REFRESHTOKEN">
+                <ScalarProperty Name="TOKENID" ColumnName="TOKENID" />
+                <ScalarProperty Name="APPLICATIONID" ColumnName="APPLICATIONID" />
+                <ScalarProperty Name="SUBJECT" ColumnName="SUBJECT" />
+                <ScalarProperty Name="UTCCREATED" ColumnName="UTCCREATED" />
+                <ScalarProperty Name="UTCEXPIRY" ColumnName="UTCEXPIRY" />
+                <ScalarProperty Name="TICKET" ColumnName="TICKET" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROLES">
+            <EntityTypeMapping TypeName="IdentityServerModel.ROLES">
+              <MappingFragment StoreEntitySet="ROLES">
+                <ScalarProperty Name="APPLICATIONID" ColumnName="APPLICATIONID" />
+                <ScalarProperty Name="ROLEID" ColumnName="ROLEID" />
+                <ScalarProperty Name="ROLENAME" ColumnName="ROLENAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="ISDELETED" ColumnName="ISDELETED" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERCLAIM">
+            <EntityTypeMapping TypeName="IdentityServerModel.USERCLAIM">
+              <MappingFragment StoreEntitySet="USERCLAIM">
+                <ScalarProperty Name="CLAIMID" ColumnName="CLAIMID" />
+                <ScalarProperty Name="USERACCOUNTID" ColumnName="USERACCOUNTID" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="VALUE" ColumnName="VALUE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERLOGIN">
+            <EntityTypeMapping TypeName="IdentityServerModel.USERLOGIN">
+              <MappingFragment StoreEntitySet="USERLOGIN">
+                <ScalarProperty Name="LOGINID" ColumnName="LOGINID" />
+                <ScalarProperty Name="USERACCOUNTID" ColumnName="USERACCOUNTID" />
+                <ScalarProperty Name="PROVIDERNAME" ColumnName="PROVIDERNAME" />
+                <ScalarProperty Name="PROVIDERKEY" ColumnName="PROVIDERKEY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERPROFILE">
+            <EntityTypeMapping TypeName="IdentityServerModel.USERPROFILE">
+              <MappingFragment StoreEntitySet="USERPROFILE">
+                <ScalarProperty Name="USERACCOUNTID" ColumnName="USERACCOUNTID" />
+                <ScalarProperty Name="BIRTHDATE" ColumnName="BIRTHDATE" />
+                <ScalarProperty Name="GENDER" ColumnName="GENDER" />
+                <ScalarProperty Name="PROFILEPICTURE" ColumnName="PROFILEPICTURE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERS">
+            <EntityTypeMapping TypeName="IdentityServerModel.USERS">
+              <MappingFragment StoreEntitySet="USERS">
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="USERFULLNAME" ColumnName="USERFULLNAME" />
+                <ScalarProperty Name="USEREMAIL" ColumnName="USEREMAIL" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="PASSWORDFAILCOUNT" ColumnName="PASSWORDFAILCOUNT" />
+                <ScalarProperty Name="PASSWORDFORMAT" ColumnName="PASSWORDFORMAT" />
+                <ScalarProperty Name="PASSWORDSALT" ColumnName="PASSWORDSALT" />
+                <ScalarProperty Name="ISAPPROVED" ColumnName="ISAPPROVED" />
+                <ScalarProperty Name="ISLOCKEDOUT" ColumnName="ISLOCKEDOUT" />
+                <ScalarProperty Name="ISDELETED" ColumnName="ISDELETED" />
+                <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+                <ScalarProperty Name="DATECHANGEPASS" ColumnName="DATECHANGEPASS" />
+                <ScalarProperty Name="DATELASTACTIVITY" ColumnName="DATELASTACTIVITY" />
+                <ScalarProperty Name="DATELASTLOGIN" ColumnName="DATELASTLOGIN" />
+                <ScalarProperty Name="DATELASTLOCKOUT" ColumnName="DATELASTLOCKOUT" />
+                <ScalarProperty Name="DEPARTMENT" ColumnName="DEPARTMENT" />
+                <ScalarProperty Name="DATEACCESSEXPIRY" ColumnName="DATEACCESSEXPIRY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERSINROLE">
+            <EntityTypeMapping TypeName="IdentityServerModel.USERSINROLE">
+              <MappingFragment StoreEntitySet="USERSINROLE">
+                <ScalarProperty Name="USERINROLEID" ColumnName="USERINROLEID" />
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+                <ScalarProperty Name="ROLEID" ColumnName="ROLEID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOGS">
+            <EntityTypeMapping TypeName="IdentityServerModel.LOGS">
+              <MappingFragment StoreEntitySet="LOGS">
+                <ScalarProperty Name="TIMESTAMP" ColumnName="TIMESTAMP" />
+                <ScalarProperty Name="TRACE" ColumnName="TRACE" />
+                <ScalarProperty Name="MESSAGE" ColumnName="MESSAGE" />
+                <ScalarProperty Name="ACTION" ColumnName="ACTION" />
+                <ScalarProperty Name="ACTOR" ColumnName="ACTOR" />
+                <ScalarProperty Name="COMPUTERNAME" ColumnName="COMPUTERNAME" />
+                <ScalarProperty Name="APPLICATIONVERSION" ColumnName="APPLICATIONVERSION" />
+                <ScalarProperty Name="APPLICATIONNAME" ColumnName="APPLICATIONNAME" />
+                <ScalarProperty Name="CATEGORY" ColumnName="CATEGORY" />
+                <ScalarProperty Name="LOGID" ColumnName="LOGID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
